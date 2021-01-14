@@ -1,0 +1,45 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.1'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'java'
+	id 'info.solidsoft.pitest' version '1.5.2'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.2'
+	implementation 'javax.servlet:javax.servlet-api:3.0.1'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'junit:junit:4.13'
+	testImplementation 'org.powermock:powermock-core:2.0.9'
+	testImplementation 'org.powermock:powermock-api-mockito2:2.0.9'
+	testImplementation 'org.powermock:powermock-module-junit4:2.0.9'
+	testImplementation 'org.assertj:assertj-core:3.17.1'
+}
+
+//test {
+//	useJUnitPlatform()
+//}
+
+pitest {
+	targetClasses.addAll(['com.example.configurationtestissueapplication.*'])
+	pitestVersion.set('1.5.2')
+	threads.set(4)
+//	mutationThreshold.set(100)
+//	coverageThreshold.set(100)
+	jvmArgs.add('-Xmx2G')
+	outputFormats.addAll(['XML', 'HTML'])
+	excludedMethods.add('hashCode')
+	timestampedReports.set(false)
+	enableDefaultIncrementalAnalysis.set(false)
+}
